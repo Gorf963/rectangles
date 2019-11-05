@@ -1,3 +1,5 @@
+use std::fs;
+
 #[derive(Clone, PartialEq)]
 pub struct Point {
     pub x: i32,
@@ -5,15 +7,15 @@ pub struct Point {
 }
 
 
-pub fn loader(points: &mut Vec<Point>){
-    
-    points.push(Point{x:1,y:1});
-    points.push(Point{x:2,y:1});
-    points.push(Point{x:3,y:1});
-    points.push(Point{x:1,y:2});
-    points.push(Point{x:2,y:2});
-    points.push(Point{x:3,y:2});
-    
+pub fn loader(filename: String, points: &mut Vec<Point>){
+    let contents = fs::read_to_string(filename).expect("Something went wrong with file read");
+    for line in contents.lines() {
+        let mut s = line.split(',');
+        let temp_x: i32 = s.next().unwrap().parse().unwrap();
+        let temp_y: i32 = s.next().unwrap().parse().unwrap();
+        points.push(Point{x:temp_x,y:temp_y});
+    }
+   
 }
 
 pub fn find_rec(points: Vec<Point>) -> u32 {
